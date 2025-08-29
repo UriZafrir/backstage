@@ -1,5 +1,5 @@
 {
-  "name": "@backstage/plugin-kubernetes-backend",
+  "name": "@urizafrir/plugin-kubernetes-backend",
   "version": "0.20.2-next.0",
   "description": "A Backstage backend plugin that integrates towards Kubernetes",
   "backstage": {
@@ -14,7 +14,7 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "keywords": [
     "backstage",

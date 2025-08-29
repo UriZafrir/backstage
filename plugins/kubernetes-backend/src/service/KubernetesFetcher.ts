@@ -233,7 +233,15 @@ export class KubernetesClientBasedFetcher implements KubernetesFetcher {
       url.search = `labelSelector=${encode(labelSelector)}`;
     }
 
-    return fetch(url, requestInit);
+    this.logger.info(
+      `Fetching ${requestInit.method ?? 'GET'} ${url.toString()}`,
+    );
+    return fetch(url, requestInit).then(res => {
+      this.logger.info(
+        `Received ${res.status} ${res.statusText} for ${url.pathname}`,
+      );
+      return res;
+    });
   }
 
   private isServiceAccountAuthentication(
