@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: urizafrir-plugin-kubernetes-backend
-  title: "@urizafrir/plugin-kubernetes-backend"
+  name: backstage-plugin-kubernetes-backend
+  title: "@backstage/plugin-kubernetes-backend"
   description: A Backstage backend plugin that integrates towards Kubernetes
 spec:
   lifecycle: experimental
