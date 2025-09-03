@@ -1,6 +1,6 @@
 app:
   title: Backstage Example App
-  baseUrl: http://localhost:3000
+  baseUrl: http://192.168.0.105:3000
   packages: all # ✨
 
   #datadogRum:
@@ -46,14 +46,14 @@ backend:
     # is require for the backend-next to work in this repo
     dangerouslyDisableDefaultAuthPolicy: true
 
-  baseUrl: http://localhost:7007
+  baseUrl: http://192.168.0.105:7007
   listen:
     port: 7007
   database:
     client: better-sqlite3
     connection: ':memory:'
   cors:
-    origin: http://localhost:3000
+    origin: '.*'
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   csp:
@@ -238,7 +238,7 @@ auth:
         clientSecret: ${AUTH_GITLAB_CLIENT_SECRET}
         audience: ${GITLAB_BASE_URL}
     saml:
-      entryPoint: 'http://localhost:7001/'
+      entryPoint: 'http://192.168.0.105:7001/'
       issuer: 'passport-saml'
       cert: 'fake-cert-base64'
     okta:
