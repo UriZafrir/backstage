@@ -1,6 +1,6 @@
 app:
   title: Backstage Example App
-  baseUrl: http://192.168.0.105:3000
+  baseUrl: http://${baseUrl}:3000
   packages: all # ✨
 
   #datadogRum:
@@ -46,7 +46,7 @@ backend:
     # is require for the backend-next to work in this repo
     dangerouslyDisableDefaultAuthPolicy: true
 
-  baseUrl: http://192.168.0.105:7007
+  baseUrl: http://${baseUrl}:7007
   listen:
     port: 7007
   database:
@@ -238,7 +238,7 @@ auth:
         clientSecret: ${AUTH_GITLAB_CLIENT_SECRET}
         audience: ${GITLAB_BASE_URL}
     saml:
-      entryPoint: 'http://192.168.0.105:7001/'
+      entryPoint: 'http://${baseUrl}:7001/'
       issuer: 'passport-saml'
       cert: 'fake-cert-base64'
     okta:
