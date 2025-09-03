@@ -53,7 +53,7 @@ backend:
     client: better-sqlite3
     connection: ':memory:'
   cors:
-    origin: '.*'
+    origin: http://${baseUrl}:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   csp:
