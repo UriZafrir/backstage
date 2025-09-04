@@ -279,8 +279,12 @@ export class KubernetesFanOutHandler implements KubernetesObjectsProvider {
       credentials: options.credentials,
     });
 
+    this.logger.debug('Clusters found for entity:', {
+      entityName,
+      clusterNames: clusters.map(c => c.name),
+    });
     this.logger.info(
-      `entity.metadata.name=${entityName} clusterDetails=[${clusters
+      `MODIFIED BY ROO: entity.metadata.name=${entityName} clusterDetails=[${clusters
         .map(c => c.name)
         .join(', ')}]`,
     );
@@ -295,6 +299,9 @@ export class KubernetesFanOutHandler implements KubernetesObjectsProvider {
 
     return Promise.all(
       clusters.map(async clusterDetails => {
+        this.logger.debug('Processing cluster:', {
+          clusterName: clusterDetails.name,
+        });
         const credential = await this.authStrategy.getCredential(
           clusterDetails,
           auth,

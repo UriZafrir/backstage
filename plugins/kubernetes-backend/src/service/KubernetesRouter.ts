@@ -155,6 +155,9 @@ export class KubernetesRouter {
 
     // @deprecated
     router.post('/services/:serviceId', async (req, res) => {
+      this.env.logger.debug('Deprecated route called for serviceId:', {
+        serviceId: req.params.serviceId,
+      });
       await requirePermission(
         permissionApi,
         kubernetesResourcesReadPermission,

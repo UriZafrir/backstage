@@ -86,10 +86,15 @@ export class KubernetesClientBasedFetcher implements KubernetesFetcher {
   fetchObjectsForService(
     params: ObjectFetchParams,
   ): Promise<FetchResponseWrapper> {
+    this.logger.info('fetchObjectsForService called', {
+      objectTypesToFetchSize: params.objectTypesToFetch.size,
+      customResourcesSize: params.customResources.length,
+    });
     const fetchResults = Array.from(params.objectTypesToFetch)
       .concat(params.customResources)
-      .map(({ objectType, group, apiVersion, plural }) =>
-        this.fetchResource(
+      .map(({ objectType, group, apiVersion, plural }) => {
+        this.logger.debug('Fetching for objectType:', { objectType, plural });
+        return this.fetchResource(
           params.clusterDetails,
           params.credential,
           group,
@@ -113,8 +118,8 @@ export class KubernetesClientBasedFetcher implements KubernetesFetcher {
                   }),
                 )
               : this.handleUnsuccessfulResponse(params.clusterDetails.name, r),
-        ),
-      );
+        );
+      });
 
     return Promise.all(fetchResults).then(fetchResultsToResponseWrapper);
   }
@@ -233,7 +238,25 @@ export class KubernetesClientBasedFetcher implements KubernetesFetcher {
       url.search = `labelSelector=${encode(labelSelector)}`;
     }
 
-    return fetch(url, requestInit);
+    // Log the outgoing request
+    this.logger.debug(`Fetching Kubernetes resource: ${url.toString()}`, {
+      method: requestInit.method,
+    });
+
+    const response = await fetch(url, requestInit);
+    this.logger.debug(
+      `Kubernetes API response: ${response.status} ${
+        response.statusText
+      } for ${url.toString()}`,
+    );
+    if (response.ok) {
+      const responseBody = await response.clone().text(); // Clone to avoid consuming the stream
+      this.logger.debug(`Response body: ${responseBody}`);
+    } else {
+      const errorBody = await response.clone().text();
+      this.logger.warn(`Error response body: ${errorBody}`);
+    }
+    return response;
   }
 
   private isServiceAccountAuthentication(
